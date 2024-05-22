@@ -1,0 +1,32 @@
+---
+title: AAI1001 Lab Exercise 4
+author: Group 1
+date: 2024-05-28
+date-format: "dddd MMM D, YYYY"
+
+execute:
+  echo: false
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    number_sections: true
+    number_depth: 3
+---
+
+## Creating the Tables
+Done using the following SQL code:
+
+## Loading Tables
+```{r}
+#! echo: true
+
+library(DBI)
+con_airlines = con_airlines <- dbConnect(odbc::odbc(), dsn = "airlines", timeout = 10)
+con_airports = con_airports <- dbConnect(odbc::odbc(), dsn = "airports", timeout = 10)
+con_flights = con_flights <- dbConnect(odbc::odbc(), dsn = "flights", timeout = 10)
+con_planes = con_planes <- dbConnect(odbc::odbc(), dsn = "planes", timeout = 10)
+con_weather = con_weather <- dbConnect(odbc::odbc(), dsn = "weather", timeout = 10)
+```
