@@ -1,3 +1,4 @@
+-- !preview conn=con
 -- remember to run this file on the right database
 -- generate table for airlines.csv
 DROP TABLE IF EXISTS airlines CASCADE;
