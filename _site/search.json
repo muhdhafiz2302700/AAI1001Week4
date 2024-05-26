@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "page.html",
+    "href": "page.html",
+    "title": "AAI1001 Lab Exercise 4",
+    "section": "",
+    "text": "library(DBI)\ncon_nycflight13 = con_nycflight13 &lt;- dbConnect(odbc::odbc(), dsn = \"nycflight13\", timeout = 10)"
+  },
+  {
+    "objectID": "page.html#creating-the-tables",
+    "href": "page.html#creating-the-tables",
+    "title": "AAI1001 Lab Exercise 4",
+    "section": "Creating the Tables",
+    "text": "Creating the Tables\n\nDone using the create_nycflights13_tables.sql in pgAdmin4.\nThese are the columns and data types of each table.\n\nBoth flights and weather show a snapshot of the entire table because I couldn’t figure out how to render more than 10 rows.\n\n\n\nAirlines Table\n\n\n\n2 records\n\n\ncolumn_name\ndata_type\n\n\n\n\ncarrier\ncharacter varying\n\n\nname\ncharacter varying\n\n\n\n\n\n\n\nAirports Table\n\n\n\n8 records\n\n\ncolumn_name\ndata_type\n\n\n\n\nalt\ninteger\n\n\ntz\ninteger\n\n\nlat\ndouble precision\n\n\nlon\ndouble precision\n\n\ntzone\ncharacter varying\n\n\nname\ncharacter varying\n\n\ndst\ncharacter varying\n\n\nfaa\ncharacter varying\n\n\n\n\n\n\n\nFlights Table\n\n\n\n2 records\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nyear\nmonth\nday\ndep_time\nsched_dep_tim\ndep_delay\narr_time\nsched_arr_time\narr_delay\ncarrier\nflight\ntailnum\norigin\ndest\nair_time\ndistance\nhour\nminute\ntime_hour\n\n\n\n\n2013\n1\n1\n517\n515\n2\n830\n819\n11\nUA\n1545\nN14228\nEWR\nIAH\n227\n1400\n5\n15\n2013-01-01 18:00:00\n\n\n2013\n1\n1\n533\n529\n4\n850\n830\n20\nUA\n1714\nN24211\nLGA\nIAH\n227\n1416\n5\n29\n2013-01-01 18:00:00\n\n\n\n\n\n\n\nPlanes Table\n\n\n\n9 records\n\n\ncolumn_name\ndata_type\n\n\n\n\nengines\ninteger\n\n\nseats\ninteger\n\n\nspeed\ninteger\n\n\nyear\ninteger\n\n\ntailnum\ncharacter varying\n\n\nengine\ncharacter varying\n\n\ntype\ncharacter varying\n\n\nmanufacturer\ncharacter varying\n\n\nmodel\ncharacter varying\n\n\n\n\n\n\n\nWeather Table\n\n\n\n2 records\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\norigin\nyear\nmonth\nday\nhour\ntemp\ndewp\nhumid\nwind_dir\nwind_speed\nwind_gust\nprecip\npressure\nvisib\ntime_hour\n\n\n\n\nEWR\n2013\n1\n1\n1\n39.02\n26.06\n59.37\n270\n10.35702\nNA\n0\n1012.0\n10\n2013-01-01 14:00:00\n\n\nEWR\n2013\n1\n1\n2\n39.02\n26.96\n61.63\n250\n8.05546\nNA\n0\n1012.3\n10\n2013-01-01 15:00:00"
+  },
+  {
+    "objectID": "page.html#loading-tables",
+    "href": "page.html#loading-tables",
+    "title": "AAI1001 Lab Exercise 4",
+    "section": "",
+    "text": "library(DBI)\ncon_nycflight13 = con_nycflight13 &lt;- dbConnect(odbc::odbc(), dsn = \"nycflight13\", timeout = 10)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Table Data",
+    "section": "",
+    "text": "library(DBI)\ncon_nycflight13 = con_nycflight13 &lt;- dbConnect(odbc::odbc(), dsn = \"nycflight13\", timeout = 10)"
+  },
+  {
+    "objectID": "index.html#loading-tables",
+    "href": "index.html#loading-tables",
+    "title": "Table Data",
+    "section": "",
+    "text": "library(DBI)\ncon_nycflight13 = con_nycflight13 &lt;- dbConnect(odbc::odbc(), dsn = \"nycflight13\", timeout = 10)"
+  },
+  {
+    "objectID": "index.html#creating-the-tables",
+    "href": "index.html#creating-the-tables",
+    "title": "Table Data",
+    "section": "Creating the Tables",
+    "text": "Creating the Tables\n\nDone using the create_nycflights13_tables.sql in pgAdmin4.\nThese are the columns and data types of each table.\n\nBoth flights and weather show a snapshot of the entire table because I couldn’t figure out how to render more than 10 rows.\n\n\n\nAirlines Table\n\n\n\n2 records\n\n\ncolumn_name\ndata_type\n\n\n\n\ncarrier\ncharacter varying\n\n\nname\ncharacter varying\n\n\n\n\n\n\n\nAirports Table\n\n\n\n8 records\n\n\ncolumn_name\ndata_type\n\n\n\n\nalt\ninteger\n\n\ntz\ninteger\n\n\nlat\ndouble precision\n\n\nlon\ndouble precision\n\n\ntzone\ncharacter varying\n\n\nname\ncharacter varying\n\n\ndst\ncharacter varying\n\n\nfaa\ncharacter varying\n\n\n\n\n\n\n\nFlights Table\n\n\n\n2 records\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nyear\nmonth\nday\ndep_time\nsched_dep_tim\ndep_delay\narr_time\nsched_arr_time\narr_delay\ncarrier\nflight\ntailnum\norigin\ndest\nair_time\ndistance\nhour\nminute\ntime_hour\n\n\n\n\n2013\n1\n1\n517\n515\n2\n830\n819\n11\nUA\n1545\nN14228\nEWR\nIAH\n227\n1400\n5\n15\n2013-01-01 18:00:00\n\n\n2013\n1\n1\n533\n529\n4\n850\n830\n20\nUA\n1714\nN24211\nLGA\nIAH\n227\n1416\n5\n29\n2013-01-01 18:00:00\n\n\n\n\n\n\n\nPlanes Table\n\n\n\n9 records\n\n\ncolumn_name\ndata_type\n\n\n\n\nengines\ninteger\n\n\nseats\ninteger\n\n\nspeed\ninteger\n\n\nyear\ninteger\n\n\ntailnum\ncharacter varying\n\n\nengine\ncharacter varying\n\n\ntype\ncharacter varying\n\n\nmanufacturer\ncharacter varying\n\n\nmodel\ncharacter varying\n\n\n\n\n\n\n\nWeather Table\n\n\n\n2 records\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\norigin\nyear\nmonth\nday\nhour\ntemp\ndewp\nhumid\nwind_dir\nwind_speed\nwind_gust\nprecip\npressure\nvisib\ntime_hour\n\n\n\n\nEWR\n2013\n1\n1\n1\n39.02\n26.06\n59.37\n270\n10.35702\nNA\n0\n1012.0\n10\n2013-01-01 14:00:00\n\n\nEWR\n2013\n1\n1\n2\n39.02\n26.96\n61.63\n250\n8.05546\nNA\n0\n1012.3\n10\n2013-01-01 15:00:00"
+  }
+]
