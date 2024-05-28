@@ -3,47 +3,68 @@ title: Table Data
 author: Group 1
 date: 2024-05-28
 date-format: "dddd MMM D, YYYY"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    paginate: false
+    
+execute:
+  echo: false
 ---
 
-
 ## Loading Tables
+
 ```{r echo=TRUE}
 library(DBI)
-con_nycflight13 = con_nycflight13 <- dbConnect(odbc::odbc(), dsn = "nycflight13", timeout = 10)
+con_nycflight13 = con_nycflight13 <- dbConnect(odbc::odbc(), dsn = "nycflights13", timeout = 10)
 ```
 
 ## Creating the Tables
-- Done using the **create_nycflights13_tables.sql** in pgAdmin4.
-- These are the columns and data types of each table.
-  - Both **flights** and **weather** show a snapshot of the entire table because I couldn't figure out how to render more than 10 rows.
+
+-   Done using the **create_nycflights13_tables.sql** in pgAdmin4.
+-   These are the columns and data types of each table.
+    -   Both **flights** and **weather** show a snapshot of the entire table because I couldn't figure out how to render more than 10 rows.
 
 ### Airlines Table
+
 ```{sql}
 #| connection: con_nycflight13
+#| eval: true
 SELECT column_name, data_type
 FROM information_schema.columns
 WHERE table_name = 'airlines';
 ```
+
 ### Airports Table
+
 ```{sql}
 #| connection: con_nycflight13
 SELECT column_name, data_type
 FROM information_schema.columns
 WHERE table_name = 'airports';
 ```
+
 ### Flights Table
+
 ```{sql}
 #| connection: con_nycflight13
 SELECT * FROM flights LIMIT 2;
 ```
+
 ### Planes Table
+
 ```{sql}
 #| connection: con_nycflight13
 SELECT column_name, data_type
 FROM information_schema.columns
 WHERE table_name = 'planes';
 ```
+
 ### Weather Table
+
 ```{sql}
 #| connection: con_nycflight13
 SELECT * FROM weather LIMIT 2;

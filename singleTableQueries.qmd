@@ -1,6 +1,0 @@
----
-title: Single Table Queries
-author: Group 1
-date: 2024-05-28
-date-format: "dddd MMM D, YYYY"
----
