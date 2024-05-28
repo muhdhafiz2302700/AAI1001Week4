@@ -1,8 +1,13 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
 ```{r echo=TRUE}
 library(DBI)
 con_nycflight13 = con_nycflight13 <- dbConnect(odbc::odbc(), dsn = "nycflights13")
 ```
-
 
 ```{sql}
 #| connection: con_nycflight13
@@ -28,6 +33,7 @@ ORDER BY ra.rank, ra.airport_code;
 ```
 
 #top 10
+
 ```{sql}
 #| connection: con_nycflight13
 
@@ -91,7 +97,6 @@ SELECT ROUND(100.0 * COUNT(*) / (SELECT COUNT(*) FROM delayed_flights), 2) AS pe
 FROM on_time_flights;
 ```
 
-
 ```{sql}
 #| connection: con_nycflight13
 
@@ -116,7 +121,10 @@ ORDER BY rs.rank, rs.tailnum;
 
 ```
 
-#Which airport names in the airports table contain the string 'Chicago'? Create a view named chicago_airports to save the result, including only the faa and name columns.
+#Which airport names in the airports table contain the string 'Chicago'?
+Create a view named chicago_airports to save the result, including only
+the faa and name columns.
+
 ```{sql}
 #| connection: con_nycflight13
 
@@ -127,13 +135,14 @@ CREATE VIEW chicago_airports AS (
 );
 ```
 
-#How many flights departed from New York City to each of Chicago’s airports? Include columns for the following attributes:
+#How many flights departed from New York City to each of Chicago’s
+airports? Include columns for the following attributes:
 
-#Three-letter code of the destination airport
-#Name of the destination airport
-#Number of flights
-#Rank
-#Sort the results first by rank and, then, alphabetically by the three-letter code of the destination airport.
+#Three-letter code of the destination airport #Name of the destination
+airport #Number of flights #Rank #Sort the results first by rank and,
+then, alphabetically by the three-letter code of the destination
+airport.
+
 ```{sql}
 #| connection: con_nycflight13
 
@@ -156,12 +165,10 @@ ORDER BY ra.rank, ra.airport_code;
 
 ```
 
-#Which airlines operated flights from New York City to Chicago? Include columns for the following attributes:
+#Which airlines operated flights from New York City to Chicago? Include
+columns for the following attributes:
 
-#Two-letter airline code
-Airline name
-Number of flights
-Rank
+#Two-letter airline code Airline name Number of flights Rank
 
 ```{sql}
 #| connection: con_nycflight13
@@ -185,13 +192,13 @@ ON ra.airline_code = air.carrier
 ORDER BY ra.rank, ra.airline_code;
 ```
 
-#What were the ten most frequent combinations of manufacturer and model used for flights from New York City to Chicago? If manufacturer-model combinations are tied for the tenth place, incorporate all of them in the output. Include columns for each of the following attributes:
+#What were the ten most frequent combinations of manufacturer and model
+used for flights from New York City to Chicago? If manufacturer-model
+combinations are tied for the tenth place, incorporate all of them in
+the output. Include columns for each of the following attributes:
 
-#Manufacturer
-#Model
-#Number of flights
-#Rank
-#Sort by rank, then alphabetically by manufacturer, and, lastly, by model.
+#Manufacturer #Model #Number of flights #Rank #Sort by rank, then
+alphabetically by manufacturer, and, lastly, by model.
 
 ```{sql}
 #| connection: con_nycflight13
@@ -219,15 +226,16 @@ WHERE rc.rank <= 10
 ORDER BY rc.rank, rc.manufacturer, rc.model;
 ```
 
-For each combination of origin airport in New York City and destination airport in Chicago, what was the total number of available seats during 2013? Include columns for the following attributes:
+For each combination of origin airport in New York City and destination
+airport in Chicago, what was the total number of available seats during
+2013? Include columns for the following attributes:
 
-Three-letter code of the origin airport
-Name of the origin airport
-Three-letter code of the destination airport
-Name of the destination airport
-Number of seats
-Rank
-Sort the results first by the number of seats, then alphabetically by the three-letter code of the origin airport, and, lastly, by the three-letter code of the destination airport. Hint: use INNER JOIN combined with AS wisely.
+Three-letter code of the origin airport Name of the origin airport
+Three-letter code of the destination airport Name of the destination
+airport Number of seats Rank Sort the results first by the number of
+seats, then alphabetically by the three-letter code of the origin
+airport, and, lastly, by the three-letter code of the destination
+airport. Hint: use INNER JOIN combined with AS wisely.
 
 ```{sql}
 #| connection: con_nycflight13
@@ -250,4 +258,3 @@ INNER JOIN airports AS ao ON rc.origin = ao.faa
 INNER JOIN chicago_airports AS ad ON rc.dest = ad.faa
 ORDER BY rc.rank, rc.origin, rc.dest;
 ```
-
