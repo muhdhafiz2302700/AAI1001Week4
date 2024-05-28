@@ -1,0 +1,353 @@
+---
+title: "Task 3: Exploring Flights from New York City to Chicago"
+author: "GuoJun"
+format: html
+---
+
+# Task 3: Exploring Flights from New York City to Chicago
+
+1. Which airport names in the airports table contain the string 'Chicago'? Create a view named chicago_airports to save the result, including only the faa and name columns.
+
+```{sql}
+#| connection: con
+
+
+--3.5 
+-- Drop the existing view if it exists
+DROP VIEW IF EXISTS chicago_airports;
+
+-- Create the new view
+CREATE VIEW chicago_airports AS
+SELECT faa, name
+FROM airports
+WHERE name LIKE '%Chicago%';
+
+
+```
+
+```{sql}
+#| connection: con
+
+
+--4o
+
+CREATE OR REPLACE VIEW chicago_airports AS
+SELECT
+    faa,
+    name
+FROM airports
+WHERE name ILIKE '%Chicago%';
+
+
+```
+
+
+2. How many flights departed from New York City to each of Chicago’s airports? Include columns for the following attributes:
+
+  Three-letter code of the destination airport
+
+  Name of the destination airport
+
+  Number of flights
+
+  Rank
+
+Sort the results first by rank and, then, alphabetically by the three-letter code of the destination airport.
+
+```{sql}
+#| connection: con
+
+--3.5
+
+SELECT
+    dest AS airport_code,
+    a.name AS airport_name,
+    COUNT(*) AS num_flights,
+    RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+FROM
+    flights f
+JOIN
+    airports a ON f.dest = a.faa
+WHERE
+    a.name LIKE '%Chicago%'
+GROUP BY
+    dest, a.name
+ORDER BY
+    rank,
+    airport_code;
+
+
+```
+
+```{sql}
+#| connection: con
+
+
+--4o
+
+WITH flight_counts AS (
+    SELECT
+        f.dest AS airport_code,
+        a.name AS airport_name,
+        COUNT(*) AS number_of_flights
+    FROM flights f
+    JOIN airports a ON f.dest = a.faa
+    JOIN chicago_airports ca ON f.dest = ca.faa
+    WHERE f.origin IN ('JFK', 'LGA', 'EWR')
+    GROUP BY f.dest, a.name
+)
+SELECT
+    airport_code,
+    airport_name,
+    number_of_flights,
+    RANK() OVER (ORDER BY number_of_flights DESC, airport_code) AS rank
+FROM flight_counts
+ORDER BY rank, airport_code;
+
+
+```
+
+3. Which airlines operated flights from New York City to Chicago? Include columns for the following attributes:
+
+  Two-letter airline code
+
+  Airline name
+
+  Number of flights
+
+  Rank
+
+Sort the results first by rank and, then, alphabetically by the two-letter airline code. 
+
+```{sql}
+#| connection: con
+
+--3.5
+
+SELECT
+    f.carrier AS airline_code,
+    a.name AS airline_name,
+    COUNT(*) AS num_flights,
+    RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+FROM
+    flights f
+JOIN
+    airlines a ON f.carrier = a.carrier
+WHERE
+    f.dest IN (SELECT faa FROM airports WHERE name LIKE '%Chicago%')
+GROUP BY
+    f.carrier, a.name
+ORDER BY
+    rank,
+    airline_code;
+
+
+
+```
+
+```{sql}
+#| connection: con
+
+--4o
+WITH airline_flight_counts AS (
+    SELECT
+        f.carrier AS airline_code,
+        ar.name AS airline_name,
+        COUNT(*) AS number_of_flights
+    FROM flights f
+    JOIN airlines ar ON f.carrier = ar.carrier
+    JOIN chicago_airports ca ON f.dest = ca.faa
+    WHERE f.origin IN ('JFK', 'LGA', 'EWR')
+    GROUP BY f.carrier, ar.name
+)
+SELECT
+    airline_code,
+    airline_name,
+    number_of_flights,
+    RANK() OVER (ORDER BY number_of_flights DESC, airline_code) AS rank
+FROM airline_flight_counts
+ORDER BY rank, airline_code;
+
+```
+
+
+4. What were the ten most frequent combinations of manufacturer and model used for flights from New York City to Chicago? If manufacturer-model combinations are tied for the tenth place, incorporate all of them in the output. Include columns for each of the following attributes:
+
+  Manufacturer
+
+  Model
+
+  Number of flights
+
+  Rank
+
+Sort by rank, then alphabetically by manufacturer, and, lastly, by model
+
+
+```{sql}
+#| connection: con
+
+--3.5
+
+WITH manufacturer_model_counts AS (
+    SELECT
+        p.manufacturer,
+        p.model,
+        COUNT(*) AS num_flights,
+        RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+    FROM
+        flights f
+    JOIN
+        planes p ON f.tailnum = p.tailnum
+    WHERE
+        f.dest IN (SELECT faa FROM airports WHERE name LIKE '%Chicago%')
+    GROUP BY
+        p.manufacturer, p.model
+)
+SELECT
+    manufacturer,
+    model,
+    num_flights,
+    rank
+FROM
+    manufacturer_model_counts
+WHERE
+    rank <= 10
+ORDER BY
+    rank,
+    manufacturer,
+    model;
+
+
+
+```
+
+
+```{sql}
+#| connection: con
+
+
+--4o
+WITH manufacturer_model_counts AS (
+    SELECT
+        p.manufacturer,
+        p.model,
+        COUNT(*) AS number_of_flights
+    FROM flights f
+    JOIN planes p ON f.tailnum = p.tailnum
+    JOIN chicago_airports ca ON f.dest = ca.faa
+    WHERE f.origin IN ('JFK', 'LGA', 'EWR')
+    GROUP BY p.manufacturer, p.model
+),
+ranked_combinations AS (
+    SELECT
+        manufacturer,
+        model,
+        number_of_flights,
+        RANK() OVER (ORDER BY number_of_flights DESC, manufacturer, model) AS rank
+    FROM manufacturer_model_counts
+)
+SELECT
+    manufacturer,
+    model,
+    number_of_flights,
+    rank
+FROM ranked_combinations
+WHERE rank <= 10
+ORDER BY rank, manufacturer, model;
+
+
+```
+
+5. For each combination of origin airport in New York City and destination airport in Chicago, what was the total number of available seats during 2013? Include columns for the following attributes:
+
+
+Three-letter code of the origin airport
+
+Name of the origin airport
+
+Three-letter code of the destination airport
+
+Name of the destination airport
+
+Number of seats
+
+Rank
+
+Sort the results first by the number of seats, then alphabetically by the three-letter code of the origin airport, and, lastly, by the three-letter code of the destination airport. Hint: use INNER JOIN combined with AS wisely.
+
+
+```{sql}
+#| connection: con
+
+--3.5
+
+WITH seat_counts AS (
+    SELECT
+        f.origin AS origin_code,
+        oa.name AS origin_name,
+        f.dest AS destination_code,
+        da.name AS destination_name,
+        SUM(p.seats) AS total_seats,
+        RANK() OVER (ORDER BY SUM(p.seats) DESC) AS rank
+    FROM
+        flights f
+    JOIN
+        airports oa ON f.origin = oa.faa
+    JOIN
+        airports da ON f.dest = da.faa
+    JOIN
+        planes p ON f.tailnum = p.tailnum
+    WHERE
+        f.year = 2013
+        AND oa.name LIKE '%New York%'
+        AND da.name LIKE '%Chicago%'
+    GROUP BY
+        f.origin, oa.name, f.dest, da.name
+)
+SELECT
+    origin_code,
+    origin_name,
+    destination_code,
+    destination_name,
+    total_seats,
+    rank
+FROM
+    seat_counts
+ORDER BY
+    total_seats DESC,
+    origin_code,
+    destination_code;
+```
+
+```{sql}
+#| connection: con
+
+--4o
+WITH seats_per_route AS (
+    SELECT
+        f.origin AS origin_airport_code,
+        a1.name AS origin_airport_name,
+        f.dest AS destination_airport_code,
+        a2.name AS destination_airport_name,
+        SUM(p.seats) AS number_of_seats
+    FROM flights f
+    JOIN airports a1 ON f.origin = a1.faa
+    JOIN airports a2 ON f.dest = a2.faa
+    JOIN planes p ON f.tailnum = p.tailnum
+    JOIN chicago_airports ca ON f.dest = ca.faa
+    WHERE f.origin IN ('JFK', 'LGA', 'EWR') AND f.year = 2013
+    GROUP BY f.origin, a1.name, f.dest, a2.name
+)
+SELECT
+    origin_airport_code,
+    origin_airport_name,
+    destination_airport_code,
+    destination_airport_name,
+    number_of_seats,
+    RANK() OVER (ORDER BY number_of_seats DESC, origin_airport_code, destination_airport_code) AS rank
+FROM seats_per_route
+ORDER BY rank, origin_airport_code, destination_airport_code;
+
+
+```
